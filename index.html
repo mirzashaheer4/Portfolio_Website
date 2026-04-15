@@ -35,6 +35,7 @@
             scroll-behavior: smooth;
             scrollbar-width: thin;
             scrollbar-color: rgba(255,255,255,0.1) transparent;
+            overflow-x: hidden;
         }
 
         body {
@@ -1040,10 +1041,28 @@
             .nav-pill a { padding: 8px 12px; font-size: 9px; letter-spacing: 0.1em; }
             .nav-divider { width: 24px; }
 
+            .hero {
+                height: auto;
+                min-height: 100dvh;
+                padding: 140px 24px 120px;
+            }
+            .hero-fade { width: 100%; }
             .hero h1 { font-size: clamp(32px, 12vw, 64px); line-height: 0.9; }
             .hero p { font-size: 1.15rem; padding: 0 16px; }
-            .hero-links { flex-wrap: wrap; padding: 0 24px; }
-            .hero-link { padding: 12px 24px; width: 100%; text-align: center; }
+            .hero-sub { max-width: 360px; }
+            .hero-links {
+                flex-direction: column;
+                align-items: center;
+                flex-wrap: nowrap;
+                padding: 0;
+                margin-top: 32px;
+                gap: 14px;
+            }
+            .hero-link {
+                padding: 12px 24px;
+                width: min(100%, 320px);
+                text-align: center;
+            }
 
             .section-divider { padding: 0 24px; }
             .about { padding: 80px 24px; }
@@ -1054,6 +1073,7 @@
             .project-image-wrapper { height: 200px; }
             .project-actions { flex-wrap: wrap; gap: 12px; }
             .project-btn { width: 100%; }
+            .project-item::before { left: 0; right: 0; }
 
             .education { padding: 80px 24px; }
             .edu-card {
