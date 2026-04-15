@@ -1038,27 +1038,33 @@
             html { scroll-behavior: auto; }
             p { font-size: 1.15rem; line-height: 1.6; }
             .logo {
-                position: relative;
-                top: auto;
-                left: auto;
+                position: fixed;
+                top: 14px;
+                left: 16px;
                 transform: none;
-                margin: 10px auto 8px;
+                margin: 0;
                 display: flex;
                 justify-content: center;
                 width: fit-content;
+                z-index: 1001;
             }
             .logo img { height: 26px !important; }
             .nav-pill {
-                position: relative;
-                top: auto;
-                left: auto;
-                right: auto;
+                position: fixed;
+                top: 10px;
+                left: 64px;
+                right: 16px;
                 transform: none;
-                margin: 0 auto 18px;
-                width: fit-content;
+                margin: 0;
+                width: auto;
                 padding: 6px;
+                justify-content: center;
+                backdrop-filter: blur(18px);
+                -webkit-backdrop-filter: blur(18px);
+                background: rgba(255,255,255, 0.06);
+                border-color: rgba(255,255,255, 0.12);
             }
-            .nav-pill a { padding: 8px 12px; font-size: 9px; letter-spacing: 0.1em; }
+            .nav-pill a { padding: 8px 12px; font-size: 9px; letter-spacing: 0.1em; transition: all 0.35s ease; }
             .nav-divider { width: 24px; }
 
             .ambient-orb,
@@ -1068,12 +1074,10 @@
                 display: none;
             }
 
-            .nav-pill a,
             .hero-badge,
             .hero h1,
             .hero-sub,
             .hero-links,
-            .scroll-indicator,
             .orb,
             .skill-tag,
             .project-item,
@@ -1083,10 +1087,18 @@
             .contact-email,
             .social-link,
             .shimmer-border::after,
-            .nav-divider::after,
             .scroll-line::after {
                 animation: none !important;
                 transition: none !important;
+            }
+
+            .nav-pill a:hover,
+            .nav-pill a.active {
+                transition: all 0.35s ease;
+            }
+
+            .nav-divider::after {
+                animation: navWave 2.5s ease-in-out infinite;
             }
 
             .reveal,
@@ -1108,7 +1120,7 @@
             .hero {
                 height: auto;
                 min-height: 100dvh;
-                padding: 48px 24px 120px;
+                padding: 108px 24px 120px;
             }
             .hero-fade { width: 100%; }
             .hero h1 { font-size: clamp(32px, 12vw, 64px); line-height: 0.9; }
