@@ -1046,8 +1046,7 @@
             .ambient-orb,
             .mouse-spotlight,
             .vignette,
-            .film-grain,
-            #particles-canvas {
+            .film-grain {
                 display: none;
             }
 
@@ -1077,6 +1076,15 @@
                 opacity: 1;
                 transform: none;
                 transition: none !important;
+            }
+
+            .hero-badge,
+            .hero h1,
+            .hero-sub,
+            .hero-links,
+            .scroll-indicator {
+                opacity: 1;
+                transform: none;
             }
 
             .hero {
@@ -1459,7 +1467,7 @@
 
         // ===== Hero parallax fade on scroll =====
         const heroContent = document.querySelector('.hero-fade');
-        if (heroContent) {
+        if (heroContent && !isMobile) {
             window.addEventListener('scroll', () => {
                 const scrollY = window.scrollY;
                 const heroH = window.innerHeight;
@@ -1467,6 +1475,9 @@
                 heroContent.style.opacity = 1 - progress;
                 heroContent.style.transform = `translateY(${scrollY * 0.15}px)`;
             }, { passive: true });
+        } else if (heroContent) {
+            heroContent.style.opacity = '1';
+            heroContent.style.transform = 'none';
         }
 
         // ===== Particle System (Upgraded — Iridescent) =====
@@ -1474,14 +1485,57 @@
         const ctx = canvas.getContext('2d');
         let particles = [];
         let w, h;
+        let staticParticles = [];
 
-        if (isMobile) {
-            canvas.style.display = 'none';
+        function buildStaticParticles() {
+            const count = Math.min(70, Math.floor((w * h) / 14000));
+            staticParticles = [];
+            for (let i = 0; i < count; i++) {
+                const huePool = [190, 210, 230, 270, 290, 100];
+                staticParticles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    size: Math.random() * 2.2 + 0.4,
+                    hue: huePool[Math.floor(Math.random() * huePool.length)] + Math.random() * 20 - 10,
+                    alpha: Math.random() * 0.28 + 0.08
+                });
+            }
+        }
+
+        function drawStaticParticles() {
+            ctx.clearRect(0, 0, w, h);
+            staticParticles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${p.hue}, 70%, 68%, ${p.alpha})`;
+                ctx.fill();
+            });
+
+            for (let i = 0; i < staticParticles.length; i++) {
+                for (let j = i + 1; j < staticParticles.length; j++) {
+                    const dx = staticParticles[i].x - staticParticles[j].x;
+                    const dy = staticParticles[i].y - staticParticles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    if (dist < 120) {
+                        const alpha = 0.045 * (1 - dist / 120);
+                        ctx.beginPath();
+                        ctx.moveTo(staticParticles[i].x, staticParticles[i].y);
+                        ctx.lineTo(staticParticles[j].x, staticParticles[j].y);
+                        ctx.strokeStyle = `hsla(${(staticParticles[i].hue + staticParticles[j].hue) / 2}, 65%, 65%, ${alpha})`;
+                        ctx.lineWidth = 0.45;
+                        ctx.stroke();
+                    }
+                }
+            }
         }
 
         function resize() {
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
+            if (isMobile) {
+                buildStaticParticles();
+                drawStaticParticles();
+            }
         }
         resize();
         window.addEventListener('resize', resize);
