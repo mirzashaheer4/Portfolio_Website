@@ -528,6 +528,77 @@
             text-align: center;
         }
 
+        /* CV Download — Full Orb as Glowing Button */
+        .orb {
+            cursor: pointer;
+        }
+        .orb::before {
+            content: '';
+            position: absolute;
+            inset: -8px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, rgba(125,211,252,0.10) 0%, transparent 70%);
+            animation: orbGlowPulse 3s ease-in-out infinite;
+            pointer-events: none;
+            z-index: -1;
+        }
+        @keyframes orbGlowPulse {
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.08); }
+        }
+        .orb-download-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 3;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .orb:hover .orb-download-overlay {
+            background: radial-gradient(circle at center, rgba(125,211,252,0.12) 0%, transparent 70%);
+            box-shadow: 0 0 80px rgba(125,211,252,0.18), inset 0 0 50px rgba(125,211,252,0.06);
+        }
+        .orb-download-indicator {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .orb:hover .orb-download-indicator {
+            transform: scale(1.1);
+        }
+        .orb-download-indicator svg {
+            width: 32px;
+            height: 32px;
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 6px rgba(125,211,252,0.3));
+            transition: filter 0.4s ease;
+        }
+        .orb:hover .orb-download-indicator svg {
+            filter: drop-shadow(0 0 12px rgba(125,211,252,0.5));
+        }
+        .orb-download-indicator span {
+            font-family: var(--font-display);
+            font-size: 9px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            transition: color 0.4s ease;
+        }
+        .orb:hover .orb-download-indicator span {
+            color: var(--accent);
+        }
+
         /* ========== SKILLS ========== */
         .skills {
             padding: 160px 80px;
@@ -1029,8 +1100,8 @@
             .project-number { display: none; }
             .project-image-wrapper { height: 320px; }
 
-            .education { padding: 120px 40px; }
-            .contact { padding: 120px 40px; }
+            .education { padding: 120px 40px; margin: 0 auto; }
+            .contact { padding: 120px 40px; text-align: center; }
         }
 
         /* Mobile Devices */
@@ -1190,7 +1261,7 @@
     <nav class="nav-pill" id="mainNav">
         <a href="#hero" class="active">Home</a>
         <a href="#about">About</a>
-        <div class="nav-divider"></div>
+        <a href="#cv">CV</a>
         <a href="#projects">Work</a>
         <a href="#contact">Contact</a>
     </nav>
@@ -1198,7 +1269,7 @@
     <!-- Hero Section -->
     <section class="hero" id="hero">
         <div class="hero-fade">
-            <div class="hero-badge">Full-Stack · Systems · Game Dev</div>
+            <div class="hero-badge">Full-Stack &bull; Systems &bull; Game Dev</div>
             <h1>
                 Mirza<br/>
                 <span class="gradient-text">Shaheer</span>
@@ -1236,11 +1307,14 @@
                 My work spans from low-level C engine development to creating immersive web experiences and real-time multiplayer platforms. I focus on precision engineering and clean, cinematic design.
             </p>
         </div>
-        <div class="about-visual reveal">
+        <div class="about-visual reveal" id="cv">
             <div class="orb">
-                <div class="orb-inner">
-                    <div class="orb-text">Creative<br/>Engineer</div>
-                </div>
+                <a href="Curriculum Vitae.pdf" download="Curriculum Vitae.pdf" class="orb-download-overlay" data-hover title="Download CV">
+                    <div class="orb-download-indicator">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        <span>Download CV</span>
+                    </div>
+                </a>
             </div>
         </div>
     </section>
@@ -1675,13 +1749,22 @@
         }
 
         // ===== Active Nav =====
-        const sections = document.querySelectorAll('section[id]');
+        function getOffsetTop(el) {
+            let top = 0;
+            while (el) {
+                top += el.offsetTop;
+                el = el.offsetParent;
+            }
+            return top;
+        }
+        const navSections = [...document.querySelectorAll('section[id]'), document.getElementById('cv')].filter(Boolean);
+        navSections.sort((a, b) => getOffsetTop(a) - getOffsetTop(b));
         const navLinks = document.querySelectorAll('.nav-pill a');
 
         window.addEventListener('scroll', () => {
             let current = '';
-            sections.forEach(sec => {
-                const top = sec.offsetTop - 200;
+            navSections.forEach(sec => {
+                const top = getOffsetTop(sec) - 200;
                 if (window.scrollY >= top) {
                     current = sec.getAttribute('id');
                 }
