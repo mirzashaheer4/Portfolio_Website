@@ -4,6 +4,7 @@
 # Don't ignore directories
 !*/
 
-# Keep ONLY the index and gitignore
+# Keep ONLY the index, gitignore, and PDFs
 !index.html
 !.gitignore
+!*.pdf
