@@ -482,9 +482,18 @@
             justify-content: center;
         }
 
+        .orbs-container {
+            display: flex;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+
         .orb {
-            width: 320px;
-            height: 320px;
+            width: 250px;
+            height: 250px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, rgba(125,211,252,0.15), rgba(192,132,252,0.1), transparent 70%);
             border: 1px solid rgba(255,255,255,0.06);
@@ -500,6 +509,9 @@
             opacity: 0.15;
             animation: orbSpin 12s linear infinite;
         }
+        .orb.orb--resume::after {
+            animation: orbSpinReverse 14s linear infinite;
+        }
         @keyframes orbFloat {
             0%, 100% { transform: translateY(0px); }
             50% { transform: translateY(-20px); }
@@ -507,6 +519,10 @@
         @keyframes orbSpin {
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
+        }
+        @keyframes orbSpinReverse {
+            from { transform: rotate(360deg); }
+            to { transform: rotate(0deg); }
         }
 
         .orb-inner {
@@ -1261,7 +1277,7 @@
     <nav class="nav-pill" id="mainNav">
         <a href="#hero" class="active">Home</a>
         <a href="#about">About</a>
-        <a href="#cv">CV</a>
+        <a href="#cv">Resume / CV</a>
         <a href="#projects">Work</a>
         <a href="#contact">Contact</a>
     </nav>
@@ -1308,13 +1324,25 @@
             </p>
         </div>
         <div class="about-visual reveal" id="cv">
-            <div class="orb">
-                <a href="Curriculum Vitae.pdf" download="Curriculum Vitae.pdf" class="orb-download-overlay" data-hover title="Download CV">
-                    <div class="orb-download-indicator">
-                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-                        <span>Download CV</span>
-                    </div>
-                </a>
+            <div class="orbs-container">
+                <!-- Curriculum Vitae (CV) Orb -->
+                <div class="orb">
+                    <a href="Curriculum Vitae.pdf" download="Curriculum Vitae.pdf" class="orb-download-overlay" data-hover title="Download CV">
+                        <div class="orb-download-indicator">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <span>Download CV</span>
+                        </div>
+                    </a>
+                </div>
+                <!-- Resume Orb -->
+                <div class="orb orb--resume" style="animation-delay: -4s;">
+                    <a href="Resume.pdf" download="Resume.pdf" class="orb-download-overlay" data-hover title="Download Resume">
+                        <div class="orb-download-indicator">
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            <span>Download Resume</span>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section>
